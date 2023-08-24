@@ -16,12 +16,13 @@ public class Floyd {
 				for(j=1;j<=n;j++)
 					w[i][j]=min(w[i][j], w[i][k]+w[k][j]);
 		System.out.println("the shortest path will be");
-		for(i=1;i<n;i++)
+		for(i=1;i<=n;i++)
 		{
-			for(j=1;j<n;i++)
+			for(j=1;j<=n;j++)
 			{
 				System.out.println(w[i][j]+ "");
 			}
+			System.out.println();
 		}
 	}
 
