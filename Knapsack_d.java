@@ -1,41 +1,80 @@
-package sample;
 import java.util.Scanner;
 
 public class Knapsack_d {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int v[][]=new int[20][20];
-		Knapsack_d ks=new Knapsack_d();
-		Scanner sc = new Scanner(System.in);
-		System.out.println("enter the number of items");
-		int n=sc.nextInt();
-		int[] p = new int[20];
-		int[] w = new int[20];
-		System.out.println("enter the weights of items");
-		for(int i=0;i<n;i++) {
-			w[i]=sc.nextInt();
-		}
-		System.out.println("enter the profits of items");
-		for(int i=0;i<n;i++) {
-			p[i]=sc.nextInt();
-		}
-		System.out.println("enter the knapsack capacity");
-		int m=sc.nextInt();
-		System.out.println("item /weight/ profit ");
-		for(int i=1;i<=n;i++) {
-			System.out.println(i+'\t'+w[i]+'\t'+p[i]);
-		}
-		ks.k(m,n,w,p,v);
-		System.out.println("Contents of Knapsack are");
-		for(int i=0;i<=n;i++) {
-			for(int j=0;j<=n;j++) {
-				System.out.println(v[i][j]+"");
-			}
-			System.out.println();
-			
-		}
-		
-	}
-
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        Knapsack k=new Knapsack();
+        int p[]=new int[10];        
+        int w[]=new int[10];        
+        int v[][]=new int[10][10];
+        int n,m,i,j;
+        System.out.println("Enter the number of items:");
+        n=sc.nextInt();
+        System.out.println("Enter the Profits:");
+        for(i=0;i<n;i++){
+            p[i]=sc.nextInt();
+        }
+        System.out.println("Enter the Weights:");
+        for(i=0;i<n;i++){
+            w[i]=sc.nextInt();
+        }
+        System.out.println("Enter the capacity:");
+        m=sc.nextInt();
+        System.out.println("Item\tWeight\tProfit");
+        for(i=0;i<n;i++){
+            System.out.println(i+"\t"+w[i]+"\t"+p[i]);
+            k.result(m,n,w,p,v);
+        }
+        System.out.println("The items in bag are:");
+        for(i=0;i<=n;i++){
+            for(j=0;j<=m;j++){
+                System.out.print(v[i][j]+"\t");
+            }
+            System.out.println();
+        }
+        k.optimal(m, n, w, v);
+        
+    }
+    public int max(int i,int j){
+        if(i>j) return i;
+        else return j;
+    }
+    public void result(int m,int n,int w[],int p[],int v[][]){
+        int i,j;
+        for(i=0;i<=n;i++){
+            for(j=0;j<=m;j++){
+                if(i==0 || j==0){
+                    v[i][j]=0;
+                }
+                else if(w[i]<j){
+                    v[i][j]=v[i-1][j];
+                }
+                else{
+                    v[i][j]=max(v[i-1][j], p[i]+v[i-1][j-w[i]]);
+                }
+            }
+        }
+    }
+    public void optimal(int m,int n,int[] w,int[][] v){
+        int[] x=new int[n];
+        int i=n,j=m,item=0;
+        while(i!=0 && j!=0){
+            if(v[i][j]!=v[i-1][j]){
+                x[i]=1;
+                j=j-w[i];
+                item=1;
+            }
+            i--;
+        }
+        System.out.println("Optimal Solution:"+v[n][m]);
+        System.out.println("Selected Items are:");
+        for(i=0;i<n;i++){
+            if(x[i]==1){
+                System.out.print(i+"\t");
+            }
+            if(item==0){
+                System.out.println("No items were place in Knapsack");
+            }
+        }
+    }
 }
